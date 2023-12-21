@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 psnawp = "*"
 guizero = "*"
-rawg = "*"
 
 [dev-packages]
 
