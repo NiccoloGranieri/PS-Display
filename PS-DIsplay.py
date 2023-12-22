@@ -1,49 +1,39 @@
-from guizero import App, Picture
-# from psnawp_api import PSNAWP
-# import urllib.request
-
 psnawp = PSNAWP('')
+from guizero import App, Picture, Text
+from psnawp_api import PSNAWP
+import urllib.request
+import os
 
-# # This is you
-# client = psnawp.me()
+client = psnawp.me()
+PS5StaticIP = "192.168.1.200"
+allTitleStats = list()
 
-# titles_with_stats = list(client.title_stats())
+def pingPS5(ip):
+    # Ping PS5 to check if it is on
+    response = os.system("ping -c 1 " + ip)
+    return response # 0 = on, 1 = off
 
-# img = titles_with_stats[0].image_url
-# urllib.request.urlretrieve(img, "test.jpg")
+def checkImgLibrary(title, url):
+    # Check if game art is present in images folder
+    if os.path.exists(f"images/{title}.png"):
+        pass
+    else:
+        urllib.request.urlretrieve(url, f"images/{title}.png")
+    return f"images/{title}.png"
+
+if not allTitleStats:
+    allTitleStats = list(client.title_stats())
+elif allTitleStats and pingPS5(PS5StaticIP) == 0:
+    allTitleStats.clear()
+    allTitleStats = list(client.title_stats())
+
+gameName = allTitleStats[0].name
+gameArtURL = allTitleStats[0].image_url
+
+gameArt = checkImgLibrary(gameName, gameArtURL)
 
 app = App()
-picture = Picture(app, image="images/test.gif")
+picture = Picture(app, image = gameArt, align="left")
+test = Text(app, text = "test", align="right")
+app.set_full_screen()
 app.display()
-
-
-# import rawg
-# import asyncio
-
-# async def requests():
-#     async with rawg.ApiClient(rawg.Configuration(api_key={'key': '666f1797f3294cf8890bbcf67f143776'})) as api_client:
-#         # Create an instance of the API class
-#         api = rawg.GamesApi(api_client)
-
-#         # Making requests
-#         coros = [api.games_read(id=name) for name in ['baldurs-gate-3']]
-
-#         # Waiting for requests
-#         for coro in asyncio.as_completed(coros):
-#             game: rawg.GameSingle = await coro
-#             print('——————————————————————————————————————————————')
-#             print('        Name |', game.name)
-#             print('    Released |', game.released)
-#             print('      Rating |', game.rating)
-#             print('Achievements |', game.achievements_count)
-#             print('     Website |', game.website)
-#             print('  Metacritic |', game.metacritic)
-#             print('  Metacritic |', game.background_image)
-#             print('——————————————————————————————————————————————')
-#             print()
-
-            
-
-
-# if __name__ == '__main__':
-#     asyncio.get_event_loop().run_until_complete(requests())
