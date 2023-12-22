@@ -8,7 +8,6 @@ path = os.getcwd()
 
 with open(os.path.abspath(os.path.join(path, os.pardir)) + '/npsso.txt', 'r') as file:
     npsso = file.read().replace('\n', '')
-    print(npsso)
 
 psnawp = PSNAWP(npsso)
 client = psnawp.me()
@@ -30,19 +29,21 @@ def checkImgLibrary(title, url):
         im.save(f"images/{title}.png", "PNG")
     return f"images/{title}.png"
 
-if not allTitleStats:
-    allTitleStats = list(client.title_stats())
-elif allTitleStats and pingPS5(PS5StaticIP) == 0:
-    allTitleStats.clear()
-    allTitleStats = list(client.title_stats())
+if __name__ == "__main__":
+    while True:
+        if not allTitleStats:
+            allTitleStats = list(client.title_stats())
+        elif allTitleStats and pingPS5(PS5StaticIP) == 0:
+            allTitleStats.clear()
+            allTitleStats = list(client.title_stats())
 
-gameName = allTitleStats[0].name
-gameArtURL = allTitleStats[0].image_url
+        gameName = allTitleStats[0].name
+        gameArtURL = allTitleStats[0].image_url
 
-gameArt = checkImgLibrary(gameName, gameArtURL)
+        gameArt = checkImgLibrary(gameName, gameArtURL)
 
-app = App()
-picture = Picture(app, image = gameArt, align="left")
-test = Text(app, text = "test", align="right")
-app.set_full_screen()
-app.display()
+        app = App()
+        picture = Picture(app, image = gameArt, align="left").resize(480, 480)
+        title = Text(app, text = gameName, align="right")
+        app.set_full_screen()
+        app.display()
