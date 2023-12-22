@@ -1,5 +1,6 @@
 from guizero import App, Picture, Text
 from psnawp_api import PSNAWP
+from PIL import Image
 import urllib.request
 import os
 
