@@ -35,7 +35,15 @@ def updateData(psIP, stats, me):
         stats = list(me.title_stats())
     
     title.value = stats[0].name
-    title.after(10000, updateData, psIP, stats, me)
+    title.after(10000, updateData, (psIP, stats, me))
+    
+def updatePic(psIP, stats, me):
+    if pingPS5(psIP) == 0:
+        stats.clear()
+        stats = list(me.title_stats())
+    
+    picture.image = checkImgLibrary(stats[0].name, stats[0].image_url)
+    title.after(10000, updatePic, (psIP, stats, me))
 
 if __name__ == "__main__":
 
@@ -45,11 +53,10 @@ if __name__ == "__main__":
     gameArt = checkImgLibrary(gameName, allTitleStats[0].image_url)
 
     app = App()
-    picture = Picture(app, image = gameArt, align="left").resize(480, 480)
+    picture = Picture(app, image = gameArt, align="left")
     title = Text(app, text = gameName, align="right")
     app.set_full_screen()
-    
-    # picture.repeat(10000, updateData(PS5StaticIP))  # Schedule call to counter() every 1000ms
-    title.after(10000, updateData, PS5StaticIP, allTitleStats, client)  # Schedule call to counter() every 1000ms
 
+    picture.after(10000, updatePic, (PS5StaticIP, allTitleStats, client))  # Schedule call to counter() every 1000ms
+    title.after(10000, updateData, (PS5StaticIP, allTitleStats, client))  # Schedule call to counter() every 1000ms
     app.display()
