@@ -1,5 +1,6 @@
 # Images
 *.png
+*.jpeg
 
 # macOS Garbage
 *.DS_Store
