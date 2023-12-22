@@ -7,6 +7,7 @@ path = os.getcwd()
 
 with open(os.path.abspath(os.path.join(path, os.pardir)) + '/npsso.txt', 'r') as file:
     npsso = file.read().replace('\n', '')
+    print(npsso)
 
 psnawp = PSNAWP(npsso)
 client = psnawp.me()
