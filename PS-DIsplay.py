@@ -25,7 +25,9 @@ def checkImgLibrary(title, url):
     if os.path.exists(f"images/{title}.png"):
         pass
     else:
-        urllib.request.urlretrieve(url, f"images/{title}.png")
+        urllib.request.urlretrieve(url, f"images/{title}.jpeg")
+        im = Image.open(f"images/{title}.jpeg")
+        im.save(f"images/{title}.png", "PNG")
     return f"images/{title}.png"
 
 if not allTitleStats:
