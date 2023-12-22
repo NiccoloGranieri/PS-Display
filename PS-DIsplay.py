@@ -1,9 +1,14 @@
-psnawp = PSNAWP('')
 from guizero import App, Picture, Text
 from psnawp_api import PSNAWP
 import urllib.request
 import os
 
+path = os.getcwd()
+
+with open(os.path.abspath(os.path.join(path, os.pardir)) + '/npsso.txt', 'r') as file:
+    npsso = file.read()
+
+psnawp = PSNAWP(npsso)
 client = psnawp.me()
 PS5StaticIP = "192.168.1.200"
 allTitleStats = list()
